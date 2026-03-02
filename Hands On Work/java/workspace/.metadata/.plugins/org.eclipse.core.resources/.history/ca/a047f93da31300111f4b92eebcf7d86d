@@ -1,0 +1,9 @@
+package com.maven;
+
+public class Jdbc {
+
+	public Jdbc() {
+		// TODO Auto-generated constructor stub
+	}
+
+}

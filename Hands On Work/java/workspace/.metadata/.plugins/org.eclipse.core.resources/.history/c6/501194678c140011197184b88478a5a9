@@ -1,0 +1,9 @@
+package com.model;
+
+public class Launch {
+
+	public Launch() {
+		// TODO Auto-generated constructor stub
+	}
+
+}

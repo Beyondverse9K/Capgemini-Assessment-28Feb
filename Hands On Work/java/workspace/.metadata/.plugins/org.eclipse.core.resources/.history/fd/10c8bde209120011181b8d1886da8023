@@ -1,0 +1,9 @@
+package com.junit5;
+
+public class Palindrome {
+
+	public Palindrome() {
+		// TODO Auto-generated constructor stub
+	}
+
+}

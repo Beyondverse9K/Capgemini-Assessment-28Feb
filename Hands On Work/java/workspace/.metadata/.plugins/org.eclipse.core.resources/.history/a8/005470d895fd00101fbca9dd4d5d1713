@@ -1,0 +1,18 @@
+package practice;
+
+public class Length {
+
+	public Length() {
+		// TODO Auto-generated constructor stub
+	}
+	public static void main(String[] args) {
+		String st="JJ SMIT";
+		int len=0;
+		char ch=st.charAt(0);
+		while(ch!='\0') {
+			len++;
+			ch=st.charAt(len);
+		}
+		System.out.println(len);
+	}
+}

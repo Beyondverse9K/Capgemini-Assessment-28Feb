@@ -1,0 +1,16 @@
+package com.junit5;
+
+import static org.junit.jupiter.api.Assertions.*;
+
+import org.junit.jupiter.api.Test;
+
+class BitonicTest {
+	@Test
+	void testFindMaximum() {
+		int[] arr = {1, 3, 8, 12, 9, 5, 2};
+		int actual=Bitonic.findMaximum(arr);
+		int expected=12;
+		assertEquals(actual,expected);
+	}
+
+}

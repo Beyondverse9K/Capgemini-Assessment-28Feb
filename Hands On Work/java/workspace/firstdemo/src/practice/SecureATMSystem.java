@@ -1,0 +1,97 @@
+package practice;
+
+interface ATMOperations {
+    void withdraw(double amount) throws InvalidTransactionException;
+    void withdraw(double amount, int pin) throws InvalidTransactionException;
+    void deposit(double amount);
+}
+
+class InvalidTransactionException extends Exception {
+    public InvalidTransactionException(String msg) { super(msg); }
+}
+
+class InsufficientFundsException extends RuntimeException {
+    public InsufficientFundsException(String msg) { super(msg); }
+}
+
+abstract class ATMAccount implements ATMOperations {
+    protected int pinAttempts = 0; // Each account has its own counter
+    private String accountNumber;
+    private double balance;
+    private double dailyLimit;
+    private double withdrawnToday = 0;
+
+    public ATMAccount(String accNo, String name, double balance, double limit) {
+        this.accountNumber = accNo;
+        this.balance = balance;
+        this.dailyLimit = limit;
+    }
+
+    public double getBalance() { return balance; }
+    
+    public void deposit(double amount) { 
+        this.balance += amount; 
+        System.out.println("Deposited: " + amount);
+    }
+
+    public void deductBalance(double amount) {
+        balance -= amount;
+        withdrawnToday += amount;
+    }
+
+    public void validate(double amount) throws InvalidTransactionException {
+        if (amount <= 0) throw new InvalidTransactionException("Invalid amount.");
+        if (withdrawnToday + amount > dailyLimit) throw new InvalidTransactionException("Daily limit exceeded.");
+        if (amount > balance) throw new InsufficientFundsException("Insufficient balance.");
+    }
+
+    // New Transfer Logic
+    public void transfer(ATMAccount target, double amount, int pin) throws InvalidTransactionException {
+        System.out.println("Initiating transfer of " + amount + "...");
+        this.withdraw(amount, pin); // This validates PIN and limits
+        target.deposit(amount);
+        System.out.println("Transfer complete!");
+    }
+}
+
+class SavingsAccount extends ATMAccount {
+    public SavingsAccount(String accNo, String name, double balance) {
+        super(accNo, name, balance, 20000);
+    }
+
+    public void withdraw(double amount) throws InvalidTransactionException {
+        validate(amount);
+        deductBalance(amount);
+        System.out.println("Withdrawal successful. Remaining: " + getBalance());
+    }
+
+    public void withdraw(double amount, int pin) throws InvalidTransactionException {
+        if (pinAttempts >= 3) throw new InvalidTransactionException("Account Blocked!");
+        if (pin != 1234) {
+            pinAttempts++;
+            throw new InvalidTransactionException("Incorrect PIN. Attempt " + pinAttempts + "/3");
+        }
+        withdraw(amount);
+    }
+}
+
+public class SecureATMSystem {
+    public static void main(String[] args) {
+        ATMAccount acc1 = new SavingsAccount("SA101", "Subarna", 50000);
+        ATMAccount acc2 = new SavingsAccount("SA102", "Receiver", 1000);
+
+        // This array simulates 4 different user actions
+        int[] pinsToTry = {1111, 1234, 1234, 1111, 1111, 1111}; 
+        
+        for (int p : pinsToTry) {
+            try {
+                acc1.transfer(acc2, 5000, p);
+            } catch (InvalidTransactionException e) {
+                System.out.println("CAUGHT ERROR: " + e.getMessage());
+            } catch (InsufficientFundsException e) {
+                System.out.println("RUNTIME ERROR: " + e.getMessage());
+            }
+            System.out.println("-------------------------");
+        }
+    }
+}

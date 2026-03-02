@@ -1,0 +1,9 @@
+package com.hib2.Hibernate2;
+
+public class Employee {
+
+	public Employee() {
+		// TODO Auto-generated constructor stub
+	}
+
+}

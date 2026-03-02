@@ -1,0 +1,25 @@
+package com.junit5;
+
+import static org.junit.jupiter.api.Assertions.*;
+
+import org.junit.jupiter.api.Test;
+
+class ArrayTest {
+
+	@Test
+	void test() {
+		try {
+			int arr[]= {1};
+			for(int i=0;i<10;i++) {
+				System.out.println(arr[i]);
+			}
+		}
+		catch(NullPointerException e) {
+			System.out.println(e.getMessage());
+		}
+		catch(ArrayIndexOutOfBoundsException e) {
+			System.out.println(e.getLocalizedMessage());
+		}
+	}
+
+}

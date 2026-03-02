@@ -1,0 +1,40 @@
+package com.junit5;
+
+import static org.junit.jupiter.api.Assertions.*;
+
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
+import org.junit.jupiter.api.TestInstance.Lifecycle;
+@TestInstance(Lifecycle.PER_CLASS)
+class PalindromeTest {
+	@BeforeAll
+	void test1() {
+		System.out.println("Before All");
+	}
+	@BeforeEach
+	void test2() {
+		System.out.println("Before Each");
+	}
+	@Test
+	void test3() {
+		boolean actual=Palindrome.isPalindrome("RACECAR");
+		assertTrue(actual);
+	}
+	@Test
+	void test4() {
+		boolean actual=Palindrome.isPalindrome("RACECAR");
+		assertTrue(actual);
+	}
+	@AfterEach
+	void test5() {
+		System.out.println("After Each");
+	}
+	@AfterAll
+	void test6() {
+		System.out.println("After All");
+	}
+}

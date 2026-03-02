@@ -1,0 +1,20 @@
+package com.JDBC;
+
+import java.sql.DriverManager;
+
+public class Jdbc {
+
+	public Jdbc() {
+		// TODO Auto-generated constructor stub
+	}
+	public static void main(String[] args) {
+		try {
+			Class.forName("com.mysql.cj.Driver");
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		DriverManager.getConnection(null, null, null)
+	}
+
+}

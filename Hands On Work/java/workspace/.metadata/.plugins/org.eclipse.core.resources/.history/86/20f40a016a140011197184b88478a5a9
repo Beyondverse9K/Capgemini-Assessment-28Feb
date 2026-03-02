@@ -1,0 +1,28 @@
+package com.model;
+
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
+import org.hibernate.cfg.Configuration;
+
+public class Launch {
+
+	public Launch() {
+		// TODO Auto-generated constructor stub
+	}
+	public static void main(String[] args) {
+		Configuration cfg = new Configuration();
+		cfg.configure();
+		cfg.addAnnotatedClass(Hibernate.class);
+		SessionFactory sf = cfg.buildSessionFactory();
+		Session s = sf.openSession();
+		Hibernate h = new Hibernate(3, "Arunabha", "tonikross19@keemail.de", 1234567890);
+		s.persist(h);
+		Hibernate h1 = s.find(Hibernate.class, 3);
+		System.out.println(h1);
+		s.remove(h1);
+		Transaction t = s.beginTransaction();
+		t.commit();
+	}
+
+}

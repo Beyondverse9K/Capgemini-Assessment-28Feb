@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Rename type &apos;FoodOrderingSystem.Food&apos; to &apos;FoodOrderingSystem&apos;&#x0D;&#x0A;- Original project: &apos;firstdemo&apos;&#x0D;&#x0A;- Original element: &apos;FoodOrderingSystem.Food&apos;&#x0D;&#x0A;- Renamed element: &apos;FoodOrderingSystem.FoodOrderingSystem&apos;&#x0D;&#x0A;- Update textual occurrences in comments and strings" description="Rename type &apos;Food&apos;" flags="589830" id="org.eclipse.jdt.ui.rename.type" input="/src&lt;FoodOrderingSystem{Food.java[Food" matchStrategy="1" name="FoodOrderingSystem" qualified="false" references="false" similarDeclarations="false" stamp="1772268745441" textual="false" version="1.0"/>
+</session>

@@ -1,0 +1,21 @@
+1768815338569	Copy compilation units
+1768815365944	Copy compilation units
+1768815728903	Delete element
+1768816322737	Copy compilation units
+1768816324870	Copy compilation units
+1768817783526	Rename compilation unit 'Car.java'
+1768903954874	Copy compilation units
+1768968918023	Copy compilation unit
+1768969013485	Delete element
+1768969668317	Copy compilation unit
+1768969766893	Delete element
+1768985261066	Copy compilation units
+1768985768229	Delete element
+1768985891364	Copy compilation unit
+1768989515334	Copy compilation units
+1769056451214	Copy compilation unit
+1769058967274	Delete element
+1769064009557	Rename compilation unit 'InsufficientBalanceException.java'
+1769235931611	Encapsulate field 'accountNumber, ...'
+1769235960478	Encapsulate field 'accountHolderName, ...'
+1769235978203	Encapsulate field 'balance, ...'

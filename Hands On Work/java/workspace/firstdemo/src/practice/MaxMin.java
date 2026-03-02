@@ -1,0 +1,30 @@
+package practice;
+
+public class MaxMin {
+
+	public MaxMin() {
+		// TODO Auto-generated constructor stub
+	}
+	public static void main(String[] args) {
+		int [] arr = {1,2,3,4,5};
+		int max=Integer.MIN_VALUE;
+		int min=Integer.MAX_VALUE;
+		int i=0,j=arr.length-1;
+		while(i<j)
+		{
+			if(max<arr[i])
+				max=arr[i];
+			if(max<arr[j])
+				max=arr[j];
+			if(min>arr[i])
+				min=arr[i];
+			if(min>arr[j])
+				min=arr[j];
+			i++;
+			j--;
+		}
+		System.out.println("Max"+max);
+		System.out.println("Min"+min);
+	}
+
+}

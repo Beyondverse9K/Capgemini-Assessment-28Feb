@@ -1,0 +1,9 @@
+package com.JDBC;
+
+public class Jdbc1 {
+
+	public Jdbc1() {
+		// TODO Auto-generated constructor stub
+	}
+
+}

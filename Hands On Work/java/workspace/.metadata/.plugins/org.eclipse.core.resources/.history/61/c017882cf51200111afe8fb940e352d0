@@ -1,0 +1,146 @@
+package practice;
+
+interface ATMOperations {
+    void withdraw(double amount) throws InvalidTransactionException;
+    void withdraw(double amount, int pin) throws InvalidTransactionException;
+}
+
+// Checked Exception
+class InvalidTransactionException extends Exception {
+    public InvalidTransactionException(String msg) {
+        super(msg);
+    }
+}
+
+// Unchecked Exception
+class InsufficientFundsException extends RuntimeException {
+    public InsufficientFundsException(String msg) {
+        super(msg);
+    }
+}
+
+abstract class ATMAccount implements ATMOperations {
+	static int count=0;
+    private String accountNumber;
+    private String holderName;
+    private double balance;
+    private double dailyLimit;
+    private double withdrawnToday = 0;
+
+    public ATMAccount(String accNo, String name, double balance, double limit) {
+        this.accountNumber = accNo;
+        this.holderName = name;
+        this.balance = balance;
+        this.dailyLimit = limit;
+    }
+
+    public double getBalance() {
+        return balance;
+    }
+
+    public void deductBalance(double amount) {
+        balance -= amount;
+        withdrawnToday += amount;
+    }
+
+    public void validate(double amount) throws InvalidTransactionException {
+        if (amount <= 0) {
+			throw new InvalidTransactionException("Invalid withdrawal amount");
+		}
+
+        if (withdrawnToday + amount > dailyLimit) {
+			throw new InvalidTransactionException("Daily limit exceeded");
+		}
+
+        if (amount > balance) {
+			throw new InsufficientFundsException("Insufficient balance");
+		}
+    }
+}
+
+// Savings Account
+class SavingsAccount extends ATMAccount {
+
+    public SavingsAccount(String accNo, String name, double balance) {
+        super(accNo, name, balance, 20000);
+    }
+
+    @Override
+    public void withdraw(double amount) throws InvalidTransactionException {
+        validate(amount);
+        deductBalance(amount);
+        System.out.println("Savings Account: Withdrawal successful");
+    }
+
+    @Override
+    public void withdraw(double amount, int pin) throws InvalidTransactionException {
+        if(count<3) {
+    		if (pin != 1234) {
+    			count++;
+    			throw new InvalidTransactionException("Invalid PIN");
+    		}
+    		withdraw(amount);
+        }
+        else {
+        	System.out.println("Force Closed");
+        	System.exit(0);
+        }
+    }
+}
+
+// Salary Account
+class SalaryAccount extends ATMAccount {
+
+    public SalaryAccount(String accNo, String name, double balance) {
+        super(accNo, name, balance, 50000);
+    }
+
+    @Override
+    public void withdraw(double amount) throws InvalidTransactionException {
+        validate(amount);
+        deductBalance(amount);
+        System.out.println("Salary Account: Withdrawal successful");
+    }
+
+    @Override
+    public void withdraw(double amount, int pin) throws InvalidTransactionException {
+    	if(count<3) {
+    		if (pin != 9999) {
+    			count++;
+    			throw new InvalidTransactionException("Invalid PIN");
+    		}
+    		withdraw(amount);
+        }
+        else {
+        	System.out.println("Force Closed");
+        	System.exit(0);
+        }
+}
+
+// Test Class
+    public class SecureATMSystem {
+
+        public static void main(String[] args) {
+            ATMAccount acc1 = new SavingsAccount("SA101", "Subarna", 300000);
+
+            // Simulated user attempts
+            int[] attempts = {1234, 1034, 1034, 1234}; 
+            double withdrawalAmount = 5000;
+
+            for (int pin : attempts) {
+                try {
+                    System.out.println("Attempting withdrawal with PIN: " + pin);
+                    acc1.withdraw(withdrawalAmount, pin);
+                } catch (InvalidTransactionException e) {
+                    // This catches the PIN error but allows the loop to continue
+                    System.err.println("Error: " + e.getMessage());
+                } catch (InsufficientFundsException e) {
+                    // This handles the unchecked exception specifically
+                    System.err.println("Funds Error: " + e.getMessage());
+                }
+                System.out.println("Current Balance: " + acc1.getBalance() + "\n");
+            }
+        }
+}
+    }
+    

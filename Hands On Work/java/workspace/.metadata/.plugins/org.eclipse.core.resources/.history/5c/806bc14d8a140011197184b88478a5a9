@@ -1,0 +1,26 @@
+package com.model;
+
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
+import org.hibernate.cfg.Configuration;
+public class Launch {
+	public static void main(String[] args) {
+		Configuration cfg = new Configuration();
+		cfg.configure("hibernate.cfg.xml");
+		cfg.addAnnotatedClass(Hibernate.class);
+		SessionFactory sf = cfg.buildSessionFactory();
+		Session s = sf.openSession();
+		Hibernate h = new Hibernate(3, "Arunabha", "tonikross19@keemail.de", 1234567890);
+		//create
+		s.persist(h); //save
+		Hibernate h1 = s.find(Hibernate.class, 3); //get
+		System.out.println(h1);
+		Hibernate h2=s.find(Hibernate.class, 3);
+		h2.setName("Dutta");
+		System.out.println(h2);
+		s.remove(h2); //delete
+		Transaction t = s.beginTransaction();
+		t.commit();
+	}
+}

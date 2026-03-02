@@ -1,0 +1,22 @@
+package practice;
+
+public class UnicodeConvert {
+
+	public UnicodeConvert() {
+		// TODO Auto-generated constructor stub
+	}
+	public static void main(String[] args) {
+		String st="Gabba";
+		StringBuilder sb=new StringBuilder();
+		for(int i=0;i<st.length();i++) {
+			char ch=st.charAt(i);
+			if(ch>='A'&&ch<='Z')
+				sb.append((char)(ch+32));
+			else if(ch>='a'&&ch<='z')
+				sb.append((char)(ch-32));
+			else
+				sb.append((char)ch);
+		}
+		System.out.println(sb);
+	}
+}

@@ -1,0 +1,9 @@
+package com.hibernate;
+
+public class Hibernate {
+
+	public Hibernate() {
+		// TODO Auto-generated constructor stub
+	}
+
+}

@@ -1,0 +1,29 @@
+package com.JDBC;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+
+public class Jdbc {
+
+	public Jdbc() {
+		// TODO Auto-generated constructor stub
+	}
+	public static void main(String[] args) throws ClassNotFoundException, SQLException {
+		Connection con=null;
+		Statement st=null;
+		ResultSet rs=null;
+		Class.forName("org.postgresql.Driver");
+		String url="jdbc:postgresql://localhost:5432/SCOTT";
+		String user="postgres";
+		String pass="postgresql";
+		con=DriverManager.getConnection(url,user,pass);
+		st=con.createStatement();
+		rs=st.executeQuery("SELECT * FROM EMP");
+		while(rs.next()) {
+			System.out.println(rs.getInt(1)+","+rs.getString(2)+","+rs.getString(3));
+		}	
+	}
+}

@@ -1,0 +1,9 @@
+package practice;
+
+public class Length {
+
+	public Length() {
+		// TODO Auto-generated constructor stub
+	}
+
+}
