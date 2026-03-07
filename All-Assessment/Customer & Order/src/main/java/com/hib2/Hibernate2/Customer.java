@@ -1,0 +1,40 @@
+package com.hib2.Hibernate2;
+import jakarta.persistence.*;
+import java.time.LocalDate;
+
+@Entity
+@Table(name = "customers")
+public class Customer {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
+    private String customerName;
+    private String email;
+    private String gender;
+    private long phone;
+    private LocalDate registrationDate;
+    // CascadeType.ALL ensures operations like save/delete cascade to the Order.
+    // mappedBy indicates Order owns the foreign key.
+    @OneToOne(mappedBy = "customer", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Order order;
+    public int getId() { return id; }
+    public void setId(int id) { this.id = id; }    
+    public String getCustomerName() { return customerName; }
+    public void setCustomerName(String customerName) { this.customerName = customerName; }    
+    public String getEmail() { return email; }
+    public void setEmail(String email) { this.email = email; }   
+    public String getGender() { return gender; }
+    public void setGender(String gender) { this.gender = gender; }    
+    public long getPhone() { return phone; }
+    public void setPhone(long phone) { this.phone = phone; }    
+    public LocalDate getRegistrationDate() { return registrationDate; }
+    public void setRegistrationDate(LocalDate registrationDate) { this.registrationDate = registrationDate; }
+    public Order getOrder() { return order; }    
+    // Helper method to keep both sides of the relationship in sync
+    public void setOrder(Order order) {
+        this.order = order;
+        if (order != null) {
+            order.setCustomer(this);
+        }
+    }
+}
