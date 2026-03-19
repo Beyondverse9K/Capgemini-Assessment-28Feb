@@ -4,6 +4,8 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import com.springboot2.exception.NotFoundException;
 import com.springboot2.model.Employee;
 import com.springboot2.repository.EmployeeRepository;
 
@@ -22,7 +24,7 @@ public class EmployeeService {
 		return employeeRepository.findAll();
 	}
 	public Employee getById1(int id) {
-		return employeeRepository.findById(id).orElse(null);
+		return employeeRepository.findById(id).orElseThrow( () -> new NotFoundException("Failed Display Operation, Employee Not Found " + id));
 	}
 	public void deleteAll1() {
 		employeeRepository.deleteAll();
@@ -34,7 +36,7 @@ public class EmployeeService {
 		return employeeRepository.saveAll(emp); //update and insert
 	}
 	public Employee updateById1(int id, String newName, String newEmail, Long newMobile) {
-	    Employee existingEmployee = employeeRepository.findById(id).orElse(null);	    
+	    Employee existingEmployee = employeeRepository.findById(id).orElseThrow( () -> new NotFoundException("Failed Update Operation, Employee Not Found " + id));	    
 	    if (existingEmployee != null) {
 	    	if (newName != null && !newName.trim().isEmpty()) {
 	            existingEmployee.setName(newName);
@@ -50,7 +52,7 @@ public class EmployeeService {
 	    return null; 
 	}
     public Employee updateName1(int id, String newName) {
-        Employee existingEmployee = employeeRepository.findById(id).orElse(null);
+        Employee existingEmployee = employeeRepository.findById(id).orElseThrow( () -> new NotFoundException("Failed Update Operation, Employee Not Found " + id));
         if (existingEmployee != null) {
             existingEmployee.setName(newName);
             return employeeRepository.save(existingEmployee);
@@ -58,7 +60,7 @@ public class EmployeeService {
         return null; 
     }
     public Employee updateEmail1(int id, String newEmail) {
-        Employee existingEmployee = employeeRepository.findById(id).orElse(null);
+        Employee existingEmployee = employeeRepository.findById(id).orElseThrow( () -> new NotFoundException("Failed Update Operation, Employee Not Found " + id));
         if (existingEmployee != null) {
             existingEmployee.setEmail(newEmail);
             return employeeRepository.save(existingEmployee);
@@ -66,7 +68,7 @@ public class EmployeeService {
         return null; 
     }
     public Employee updateMobile1(int id, long newMobile) {
-        Employee existingEmployee = employeeRepository.findById(id).orElse(null);
+        Employee existingEmployee = employeeRepository.findById(id).orElseThrow( () -> new NotFoundException("Failed Update Operation, Employee Not Found " + id));
         if (existingEmployee != null) {
             existingEmployee.setMobile(newMobile);
             return employeeRepository.save(existingEmployee);
