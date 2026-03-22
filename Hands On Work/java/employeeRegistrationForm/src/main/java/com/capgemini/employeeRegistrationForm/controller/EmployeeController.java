@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.capgemini.employeeRegistrationForm.model.Employee;
+import com.capgemini.employeeRegistrationForm.model.LeaveRequest;
+import com.capgemini.employeeRegistrationForm.model.LeaveStatus;
 import com.capgemini.employeeRegistrationForm.service.EmployeeService;
 
 @CrossOrigin(origins = "http://localhost:3000") 
@@ -23,6 +25,11 @@ public class EmployeeController {
 	
 	@Autowired
 	private EmployeeService employeeService;
+
+	@PostMapping("/SPRINGlogin")
+	public Employee login(@RequestBody Employee credentials) {
+		return employeeService.login(credentials.getUsername(), credentials.getPassword());
+	}
 
 	@PostMapping("/SPRINGinsert")
 	public List<Employee> saveAll2(@RequestBody List<Employee> emp) {
@@ -33,11 +40,6 @@ public class EmployeeController {
 	public Employee save2(@RequestBody Employee emp) {
 		return employeeService.save1(emp);
 	}
-
-	@PostMapping("/SPRINGlogin")
-    public Employee login(@RequestBody Employee credentials) {
-        return employeeService.login(credentials.getUsername(), credentials.getPassword());
-    }
 
 	@GetMapping("/SPRINGdisplay")
 	public List<Employee> showAll2(){
@@ -50,13 +52,15 @@ public class EmployeeController {
 	}
 
 	@DeleteMapping("/SPRINGdelete")
-	public void deleteAll2() {
+	public String deleteAll2() {
 		employeeService.deleteAll1();
+		return "All employees deleted successfully";
 	}
 
 	@DeleteMapping("/SPRINGdelete/{id}")
-	public void deleteById2(@PathVariable int id) {
+	public String deleteById2(@PathVariable int id) {
 		employeeService.deleteById1(id);
+		return "Employee with ID " + id + " deleted successfully";
 	}
 
 	@PutMapping("/SPRINGupdate")
@@ -85,7 +89,69 @@ public class EmployeeController {
     }
 
     @PatchMapping("/SPRINGupdate/{id}/mobile")
-    public Employee updateMobile2(@PathVariable int id, @RequestParam String mobile) { // Changed to String
+    public Employee updateMobile2(@PathVariable int id, @RequestParam String mobile) {
         return employeeService.updateMobile1(id, mobile);
     }
+
+	@PostMapping("SPRINGinsert/hr/solo")
+	public Employee hrAddSingleEmployee(@RequestBody Employee emp) {
+		return employeeService.save1(emp);
+	}
+
+	@PostMapping("SPRINGinsert/hr")
+	public List<Employee> hrAddMultipleEmployees(@RequestBody List<Employee> empList) {
+		return employeeService.saveAll1(empList);
+	}
+
+	@GetMapping("/SPRINGdisplay/hr/{id}")
+	public Employee hrGetSingleEmployee(@PathVariable Integer id) {
+		return employeeService.getById1(id);
+	}
+
+	@GetMapping("/SPRINGdisplay/hr")
+	public List<Employee> hrGetAllEmployees() {
+		return employeeService.showAll1();
+	}
+
+	@PutMapping("/SPRINGupdate/hr/{id}")
+	public Employee hrUpdateSingleEmployee(@PathVariable Integer id, @RequestBody Employee updatedEmployee) {
+		return employeeService.updateById1(id, updatedEmployee.getName(), updatedEmployee.getUsername(), updatedEmployee.getEmail(), updatedEmployee.getMobile());
+	}
+
+	@PutMapping("/SPRINGupdate/hr")
+	public List<Employee> hrUpdateMultipleEmployees(@RequestBody List<Employee> empList) {
+		return employeeService.updateAll1(empList);
+	}
+
+	@DeleteMapping("/SPRINGdelete/hr/{id}")
+	public String hrDeleteSingleEmployee(@PathVariable Integer id) {
+		employeeService.deleteById1(id);
+		return "Employee with ID " + id + " deleted successfully.";
+	}
+
+	@DeleteMapping("/SPRINGdelete/hr")
+	public String hrDeleteAllEmployees() {
+		employeeService.deleteAll1();
+		return "All employees deleted successfully.";
+	}
+
+	@PostMapping("/employee/leave")
+	public LeaveRequest employeeRequestLeave(@RequestBody LeaveRequest request) {
+		return employeeService.submitLeaveRequest(request);
+	}
+
+	@GetMapping("/employee/{empId}/leaves")
+	public List<LeaveRequest> employeeViewLeaves(@PathVariable Integer empId) {
+		return employeeService.getLeavesByEmployeeId(empId);
+	}
+
+	@GetMapping("/hr/leaves")
+	public List<LeaveRequest> hrViewAllLeaves() {
+		return employeeService.getAllLeaveRequests();
+	}
+
+	@PatchMapping("/hr/leave/{leaveId}/status")
+	public LeaveRequest hrUpdateLeaveStatus(@PathVariable Integer leaveId, @RequestParam LeaveStatus status) {
+		return employeeService.updateLeaveStatus(leaveId, status);
+	}
 }

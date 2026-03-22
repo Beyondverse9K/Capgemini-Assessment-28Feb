@@ -8,16 +8,32 @@ import org.springframework.stereotype.Service;
 
 import com.capgemini.employeeRegistrationForm.exception.NotFoundException;
 import com.capgemini.employeeRegistrationForm.model.Employee;
+import com.capgemini.employeeRegistrationForm.model.LeaveRequest;
+import com.capgemini.employeeRegistrationForm.model.LeaveStatus;
 import com.capgemini.employeeRegistrationForm.repository.EmployeeRepository;
+import com.capgemini.employeeRegistrationForm.repository.LeaveRequestRepository;
 
 @Service
 public class EmployeeService {
 	
 	@Autowired
 	private EmployeeRepository employeeRepository;
-	
+
+	@Autowired
+	private LeaveRequestRepository leaveRequestRepository;
+
 	@Autowired
 	private PasswordEncoder passwordEncoder;
+
+	public Employee login(String username, String rawPassword) {
+		Employee employee = employeeRepository.findByUsername(username);
+
+		if (employee == null || !passwordEncoder.matches(rawPassword, employee.getPassword())) {
+			throw new NotFoundException("Invalid username or password");
+		}
+
+		return employee;
+	}
 	
 	public List<Employee> saveAll1(List<Employee> emp) {
 		for(Employee e : emp) {
@@ -30,16 +46,6 @@ public class EmployeeService {
 		emp.setPassword(passwordEncoder.encode(emp.getPassword()));
 		return employeeRepository.save(emp);
 	}
-
-	public Employee login(String username, String rawPassword) {
-        Employee employee = employeeRepository.findByUsername(username);
-        
-        if (employee == null || !passwordEncoder.matches(rawPassword, employee.getPassword())) {
-            throw new NotFoundException("Invalid username or password");
-        }
-        
-        return employee;
-    }
 
 	public List<Employee> showAll1(){
 		return employeeRepository.findAll();
@@ -109,7 +115,7 @@ public class EmployeeService {
         return null; 
     }
     
-    public Employee updateMobile1(int id, String newMobile) { // Changed to String
+    public Employee updateMobile1(int id, String newMobile) {
         Employee existingEmployee = employeeRepository.findById(id).orElseThrow( () -> new NotFoundException("Failed Update Operation, Employee Not Found " + id));
         if (existingEmployee != null) {
             existingEmployee.setMobile(newMobile);
@@ -117,4 +123,24 @@ public class EmployeeService {
         }
         return null; 
     }
+
+	public LeaveRequest submitLeaveRequest(LeaveRequest request) {
+		request.setStatus(LeaveStatus.PENDING);
+		return leaveRequestRepository.save(request);
+	}
+
+	public List<LeaveRequest> getLeavesByEmployeeId(Integer empId) {
+		return leaveRequestRepository.findByEmployeeId(empId);
+	}
+
+	public List<LeaveRequest> getAllLeaveRequests() {
+		return leaveRequestRepository.findAll();
+	}
+
+	public LeaveRequest updateLeaveStatus(Integer leaveId, LeaveStatus status) {
+		LeaveRequest leave = leaveRequestRepository.findById(leaveId).orElseThrow(() -> new NotFoundException("Leave Request Not Found: " + leaveId));
+		leave.setStatus(status);
+		return leaveRequestRepository.save(leave);
+	}
+
 }
