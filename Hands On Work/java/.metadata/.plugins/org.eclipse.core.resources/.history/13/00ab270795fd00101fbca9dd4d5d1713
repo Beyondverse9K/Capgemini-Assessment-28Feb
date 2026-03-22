@@ -1,9 +1,0 @@
-package practice;
-
-public class OddEven {
-
-	public OddEven() {
-		// TODO Auto-generated constructor stub
-	}
-
-}

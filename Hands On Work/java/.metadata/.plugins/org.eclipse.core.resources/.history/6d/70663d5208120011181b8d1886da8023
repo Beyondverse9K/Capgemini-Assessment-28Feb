@@ -1,9 +1,0 @@
-package com.junit5;
-
-public class BitonicTest {
-
-	public BitonicTest() {
-		// TODO Auto-generated constructor stub
-	}
-
-}
