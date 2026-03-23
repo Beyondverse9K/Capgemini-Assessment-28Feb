@@ -18,6 +18,7 @@ import com.capgemini.employeeRegistrationForm.model.Employee;
 import com.capgemini.employeeRegistrationForm.model.LeaveRequest;
 import com.capgemini.employeeRegistrationForm.model.LeaveStatus;
 import com.capgemini.employeeRegistrationForm.service.EmployeeService;
+import com.capgemini.employeeRegistrationForm.service.LeaveRequestService;
 
 @CrossOrigin(origins = "http://localhost:3000") 
 @RestController
@@ -25,6 +26,9 @@ public class EmployeeController {
 	
 	@Autowired
 	private EmployeeService employeeService;
+	
+	@Autowired
+	private LeaveRequestService leaveRequestService;
 
 	@PostMapping("/SPRINGlogin")
 	public Employee login(@RequestBody Employee credentials) {
@@ -137,21 +141,21 @@ public class EmployeeController {
 
 	@PostMapping("/employee/leave")
 	public LeaveRequest employeeRequestLeave(@RequestBody LeaveRequest request) {
-		return employeeService.submitLeaveRequest(request);
+		return leaveRequestService.submitLeaveRequest(request);
 	}
 
 	@GetMapping("/employee/{empId}/leaves")
 	public List<LeaveRequest> employeeViewLeaves(@PathVariable Integer empId) {
-		return employeeService.getLeavesByEmployeeId(empId);
+		return leaveRequestService.getLeavesByEmployeeId(empId);
 	}
 
 	@GetMapping("/hr/leaves")
 	public List<LeaveRequest> hrViewAllLeaves() {
-		return employeeService.getAllLeaveRequests();
+		return leaveRequestService.getAllLeaveRequests();
 	}
 
 	@PatchMapping("/hr/leave/{leaveId}/status")
 	public LeaveRequest hrUpdateLeaveStatus(@PathVariable Integer leaveId, @RequestParam LeaveStatus status) {
-		return employeeService.updateLeaveStatus(leaveId, status);
+		return leaveRequestService.updateLeaveStatus(leaveId, status);
 	}
 }

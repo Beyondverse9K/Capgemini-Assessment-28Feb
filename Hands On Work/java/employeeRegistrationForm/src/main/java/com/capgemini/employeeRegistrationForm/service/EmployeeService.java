@@ -20,9 +20,6 @@ public class EmployeeService {
 	private EmployeeRepository employeeRepository;
 
 	@Autowired
-	private LeaveRequestRepository leaveRequestRepository;
-
-	@Autowired
 	private PasswordEncoder passwordEncoder;
 
 	public Employee login(String username, String rawPassword) {
@@ -123,24 +120,5 @@ public class EmployeeService {
         }
         return null; 
     }
-
-	public LeaveRequest submitLeaveRequest(LeaveRequest request) {
-		request.setStatus(LeaveStatus.PENDING);
-		return leaveRequestRepository.save(request);
-	}
-
-	public List<LeaveRequest> getLeavesByEmployeeId(Integer empId) {
-		return leaveRequestRepository.findByEmployeeId(empId);
-	}
-
-	public List<LeaveRequest> getAllLeaveRequests() {
-		return leaveRequestRepository.findAll();
-	}
-
-	public LeaveRequest updateLeaveStatus(Integer leaveId, LeaveStatus status) {
-		LeaveRequest leave = leaveRequestRepository.findById(leaveId).orElseThrow(() -> new NotFoundException("Leave Request Not Found: " + leaveId));
-		leave.setStatus(status);
-		return leaveRequestRepository.save(leave);
-	}
 
 }
